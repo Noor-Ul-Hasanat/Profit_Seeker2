@@ -3,13 +3,13 @@ import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import tw from 'tailwind-react-native-classnames';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const Scanner = () => {
+const Scanner = ({navigation}) => {
     return (
         <View style={tw` bg-white justify-center items-center px-6 h-full`}>
           {/* Scan Button */}
           <TouchableOpacity
             style={tw`bg-blue-400 px-6 py-3 rounded-full mb-6 items-center flex-row w-2/4 justify-center`}
-            onPress={() => console.log('Scan pressed')}
+            onPress={() => navigation.navigate('scanner', {name: 'scanner'})}
           >
           <Icon name="barcode-scan" size={24} color="#fff" />
             <Text style={tw`text-white ml-2`}>SCAN</Text>

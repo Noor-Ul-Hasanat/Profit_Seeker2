@@ -6,6 +6,7 @@ import Products from '../screens//Products';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Histry from '../screens/Histry';
 import ProductDetail from '../screens/ProductDetail';
+import CameraComponent from '../screens/CameraComponent';
 
 const Tab = createBottomTabNavigator();
 const renderTabBarIcon = (route, focused, color, size) => {
@@ -90,6 +91,7 @@ export default function MainTabs() {
       <Tab.Screen name="Scanner" component={Scanner}  />
       <Tab.Screen name="Products" component={Products} />
       <Tab.Screen name="History" component={ProductDetail} />
+      <Tab.Screen name="scanner" component={CameraComponent} />
     </Tab.Navigator>
   );
 }
