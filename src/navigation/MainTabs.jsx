@@ -88,9 +88,10 @@ export default function MainTabs() {
     })}
   >
       <Tab.Screen name="Dashboard" component={Dashboard}  />
-      <Tab.Screen name="Scanner" component={CameraComponent}  />
+      <Tab.Screen name="Scanner" component={Scanner}  />
       <Tab.Screen name="Products" component={Products} />
       <Tab.Screen name="History" component={ProductDetail} />
+      <Tab.Screen name="scanner" component={CameraComponent} />
     </Tab.Navigator>
   );
 }
