@@ -25,7 +25,7 @@ const products = [
   },
 ];
 
-const Products = () => {
+const Products = ({navigation}) => {
     return (
         <ScrollView style={tw`bg-white p-4`}>
         {products.map((item, id) => (
@@ -50,7 +50,8 @@ const Products = () => {
 
               {/* Buttons */}
               <View style={tw`flex-row mt-2`}>
-                <TouchableOpacity style={tw`bg-blue-500 px-3 py-1 rounded-full mr-2`}>
+                <TouchableOpacity style={tw`bg-blue-500 px-3 py-1 rounded-full mr-2`}
+                  onPress={() => navigation.navigate('ProductDetail', {name: 'ProductDetail'})}>
                   <Text style={tw`text-white text-xs `}>Select</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={tw`bg-yellow-500 px-3 py-1 rounded-full`}>

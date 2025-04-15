@@ -2,11 +2,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Dashboard from '../screens/Dashboard';
 import Scanner from '../screens/Scanner';
 import Products from '../screens//Products';
-
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Histry from '../screens/Histry';
-import ProductDetail from '../screens/ProductDetail';
-import CameraComponent from '../screens/CameraComponent';
 
 const Tab = createBottomTabNavigator();
 const renderTabBarIcon = (route, focused, color, size) => {
@@ -66,6 +63,7 @@ export default function MainTabs() {
 
       // Header styling
       headerShown: true,
+      headerBackTitleVisible: true,
       headerTintColor: '#ffffff', // Back button and title color
       headerStyle: {
         backgroundColor: 'rgb(107, 170, 252)',
@@ -90,8 +88,8 @@ export default function MainTabs() {
       <Tab.Screen name="Dashboard" component={Dashboard}  />
       <Tab.Screen name="Scanner" component={Scanner}  />
       <Tab.Screen name="Products" component={Products} />
-      <Tab.Screen name="History" component={ProductDetail} />
-      <Tab.Screen name="scanner" component={CameraComponent} />
+      <Tab.Screen name="History" component={Histry} />
+      {/* <Tab.Screen name="scanner" component={CameraComponent} /> */}
     </Tab.Navigator>
   );
 }

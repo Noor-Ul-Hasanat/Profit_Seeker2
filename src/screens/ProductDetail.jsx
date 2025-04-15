@@ -37,7 +37,6 @@ const ProductDetail = () => {
           {/* Left */}
           <View style={tw`w-1/2`}>
           {/* Left-left */}
-         
          <View style={tw`flex-row justify-between`}>
          <Text style={tw`text-xs text-gray-600 mb-3 self-center`}>Dimensions  </Text>
          <TextInput style={tw`text-xs text-gray-600 border border-black px-3 py-2  mb-2 rounded-md`}>7.14 In</TextInput>
@@ -80,7 +79,7 @@ const ProductDetail = () => {
       </View>
 
       {/* Offers Section */}
-      <View style={tw`bg-white  rounded-lg border border-blue-500 mb-6 flex-row justify-between`}> `
+      <View style={tw`bg-white  rounded-lg border border-blue-500 mb-6 flex-row justify-between`}>
         <TouchableOpacity style={tw`text-lg font-semibold  text-blue-500 border-r border-blue-400`}><Text style={tw`text-blue-400 py-3 px-4 font-bold text-md`}>4 Offers</Text></TouchableOpacity>
         <TouchableOpacity style={tw`text-lg font-semibold  text-blue-500 `}><Text style={tw`text-blue-400 py-3 px-4 font-bold text-md`}>Profitability</Text></TouchableOpacity>
         <TouchableOpacity style={tw`text-lg font-semibold  text-blue-500 border-l border-blue-400`}><Text style={tw`text-blue-400 py-3 px-4 font-bold text-md`}>History</Text></TouchableOpacity>
