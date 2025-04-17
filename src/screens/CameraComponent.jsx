@@ -3,9 +3,35 @@ import { Text, Button, Alert, View, Pressable } from 'react-native';
 import { Camera, useCameraDevice, useCameraPermission, useCodeScanner } from 'react-native-vision-camera';
 import tw from 'tailwind-react-native-classnames';
 import LinearGradient from 'react-native-linear-gradient';
+import { Linking } from 'react-native';
+// import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../Store/ReduxStore';
 
-import { Linking } from 'react-native'; // Add this import
 const CameraScreen = () => {
+     // redux store
+const dispatch = useDispatch();
+
+const addButtonHandler = () => {
+    if (scannedValue) {
+        // Create product object with scanned barcode
+        const product = {
+            id: scannedValue, // Using barcode as unique ID
+            name: `Product ${scannedValue}`, // You can modify this or fetch real data
+            price: 10, // Add actual price lookup logic
+            quantity: 1, // Default quantity
+            image: 'https://via.placeholder.com/150', // Placeholder image URL
+        };
+        dispatch(addToCart(product));
+        Alert.alert('Product Added', `${product.name} added to cart!`);
+        setIsActive(true);
+        setScannedValue('');
+        isScanned.current = false;
+    }
+};
+
+
+    // State to manage scanning status and scanned value
   const isScanned = useRef(false);
   const [isActive, setIsActive] = useState(true);
   const [scannedValue, setScannedValue] = useState('');
@@ -85,7 +111,7 @@ const CameraScreen = () => {
                         <Text style={tw`text-white font-semibold`}>Scan Again</Text>
                     </Pressable>
                     <Pressable
-                        onPress={''}
+                        onPress={addButtonHandler}
                         style={({ pressed }) => tw`bg-blue-600 py-3 px-6 rounded-lg  ${pressed ? 'opacity-60' : 'opacity-100'}`}
                     >
                         <Text style={tw`text-white font-semibold`}>Add Product</Text>
