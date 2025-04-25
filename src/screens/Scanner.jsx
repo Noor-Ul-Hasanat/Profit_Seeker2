@@ -17,7 +17,7 @@ const Scanner = ({navigation}) => {
 
           {/* Input Field */}
           <TextInput
-            style={tw`border border-cyan-700 rounded-full px-5 py-3 text-center text-base w-full mb-6`}
+            style={tw`border  rounded-full px-5 py-3 text-center text-base w-full mb-6`}
             placeholder="Enter Barcode Code"
             placeholderTextColor="#6b7280"
           />
