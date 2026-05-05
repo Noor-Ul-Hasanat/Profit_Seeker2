@@ -1,12 +1,39 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import tw from 'tailwind-react-native-classnames';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import auth from '@react-native-firebase/auth';
 
-const SignIn = () => {
+const SignIn = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleSignIn = async () => {
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!normalizedEmail || !password) {
+      Alert.alert('Error', 'Please fill in all fields');
+      return;
+    }
+    
+    setLoading(true);
+    try {
+      await auth().signInWithEmailAndPassword(normalizedEmail, password);
+    } catch (error) {
+      if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-email' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+        Alert.alert('Error', 'Invalid email or password');
+      } else if (error.code === 'auth/operation-not-allowed') {
+        Alert.alert('Error', 'Email/Password sign in is disabled in Firebase Console.');
+      } else if (error.code === 'auth/network-request-failed') {
+        Alert.alert('Error', 'Network issue. Check internet and try again.');
+      } else {
+        Alert.alert('Login failed', `${error.code || 'unknown-error'}: ${error.message}`);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <View style={tw`h-full bg-blue-500 justify-center `}>
@@ -52,14 +79,22 @@ const SignIn = () => {
         </TouchableOpacity>
 
         {/* Sign In Button */}
-        <TouchableOpacity style={tw`bg-blue-500 py-3 rounded-full mt-12`}>
-          <Text style={tw`text-white text-center  text-lg`}>SIGN IN</Text>
+        <TouchableOpacity 
+          style={tw`bg-blue-500 py-3 rounded-full mt-12 flex-row justify-center items-center`}
+          onPress={handleSignIn}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="white" />
+          ) : (
+            <Text style={tw`text-white text-center text-lg`}>SIGN IN</Text>
+          )}
         </TouchableOpacity>
 
         {/* Sign Up Link */}
         <View style={tw`self-end mt-32`}>
           <Text style={tw`text-gray-500`}>Don’t Have an Account?</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
             <Text style={tw`text-blue-500 font-bold `}>Sign Up</Text>
           </TouchableOpacity>
         </View>

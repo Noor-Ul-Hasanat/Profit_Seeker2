@@ -1,11 +1,11 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Dashboard from '../screens/Dashboard';
 import Scanner from '../screens/Scanner';
-import Products from '../screens//Products';
+import Products from '../screens/Products';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Histry from '../screens/Histry';
-import MyDummyProducts from '../screens/MyDummyProducts';
 import { Invoice } from '../screens/Invoice';
+// import Histry from '../screens/Histry';
+// import MyDummyProducts from '../screens/MyDummyProducts';
 
 const Tab = createBottomTabNavigator();
 const renderTabBarIcon = (route, focused, color, size) => {
@@ -35,7 +35,7 @@ const renderTabBarIcon = (route, focused, color, size) => {
             color={color}
           />
         );
-        case 'History':
+        case 'Histry':
             return <Icon name={focused ? 'history' : 'history'} size={size} color={color} />;
       default:
         return (
@@ -90,7 +90,7 @@ export default function MainTabs() {
       <Tab.Screen name="Dashboard" component={Dashboard}  />
       <Tab.Screen name="Scanner" component={Scanner}  />
       <Tab.Screen name="Cart" component={Products} />
-      <Tab.Screen name="History" component={Invoice} />
+      <Tab.Screen name="Histry" component={Invoice} />
       {/* <Tab.Screen name="scanner" component={CameraComponent} /> */}
     </Tab.Navigator>
   );

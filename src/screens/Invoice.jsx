@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Alert, Platform, PermissionsAndroid, Modal } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { deductInventory } from '../Store/ReduxStore';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import tw from 'tailwind-react-native-classnames';
 import { BLEPrinter } from 'react-native-thermal-receipt-printer';
@@ -8,6 +9,7 @@ import BluetoothStateManager from 'react-native-bluetooth-state-manager';
 
 export const Invoice = () => {
   const cartItems = useSelector(state => state.cart);
+  const dispatch = useDispatch();
   const [printers, setPrinters] = useState([]);
   const [currentPrinter, setCurrentPrinter] = useState(null);
   const [isScanning, setIsScanning] = useState(false);
@@ -112,6 +114,7 @@ export const Invoice = () => {
       `;
 
       await BLEPrinter.printText(printContent);
+      dispatch(deductInventory(cartItems));
       Alert.alert('Success', 'Receipt printed successfully');
     } catch (error) {
       Alert.alert('Print Error', error.message);

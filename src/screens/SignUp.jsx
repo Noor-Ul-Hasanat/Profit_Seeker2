@@ -1,11 +1,48 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import tw from 'tailwind-react-native-classnames';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import auth from '@react-native-firebase/auth';
 function SignUp({navigation}) {
-     const [email, setEmail] = useState('');
+      const [email, setEmail] = useState('');
       const [password, setPassword] = useState('');
+      const [confirmPassword, setConfirmPassword] = useState('');
       const [showPassword, setShowPassword] = useState(false);
+      const [loading, setLoading] = useState(false);
+
+      const handleSignUp = async () => {
+        const normalizedEmail = email.trim().toLowerCase();
+        if (!normalizedEmail || !password || !confirmPassword) {
+          Alert.alert('Error', 'Please fill in all fields');
+          return;
+        }
+        if (password !== confirmPassword) {
+          Alert.alert('Error', 'Passwords do not match');
+          return;
+        }
+    
+        setLoading(true);
+        try {
+          await auth().createUserWithEmailAndPassword(normalizedEmail, password);
+          // AppNavigator handles navigation via onAuthStateChanged
+        } catch (error) {
+          if (error.code === 'auth/email-already-in-use') {
+            Alert.alert('Error', 'That email address is already in use!');
+          } else if (error.code === 'auth/invalid-email') {
+            Alert.alert('Error', 'That email address is invalid!');
+          } else if (error.code === 'auth/weak-password') {
+             Alert.alert('Error', 'Password should be at least 6 characters');
+          } else if (error.code === 'auth/operation-not-allowed') {
+            Alert.alert('Error', 'Email/Password sign up is disabled in Firebase Console.');
+          } else if (error.code === 'auth/network-request-failed') {
+            Alert.alert('Error', 'Network issue. Check internet and try again.');
+          } else {
+            Alert.alert('Signup failed', `${error.code || 'unknown-error'}: ${error.message}`);
+          }
+        } finally {
+          setLoading(false);
+        }
+      };
   return (
     <View style={tw`h-full bg-blue-500 justify-center `}>
 
@@ -51,8 +88,8 @@ function SignUp({navigation}) {
           placeholder="••••••••"
           placeholderTextColor="gray"
           secureTextEntry={!showPassword}
-          value={password}
-          onChangeText={setPassword}
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
         />
         <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
           <Icon name={showPassword ? 'eye' : 'eye-slash'} size={20} color="gray" />
@@ -64,19 +101,24 @@ function SignUp({navigation}) {
         <Text style={tw`text-gray-500 text-right mb-4 mt-6`}>Forgot Password?</Text>
       </TouchableOpacity>
 
-      {/* Sign In Button */}
-      <TouchableOpacity style={tw`bg-blue-500 py-3 rounded-full mt-12`}>
-        <Text style={tw`text-white text-center  text-lg`}
-         onPress={() =>
-          navigation.navigate('Main')
-        }>SIGN Up</Text>
+      {/* Sign Up Button */}
+      <TouchableOpacity 
+        style={tw`bg-blue-500 py-3 rounded-full mt-12 flex-row justify-center items-center`}
+        onPress={handleSignUp}
+        disabled={loading}
+      >
+        {loading ? (
+          <ActivityIndicator color="white" />
+        ) : (
+          <Text style={tw`text-white text-center text-lg`}>SIGN UP</Text>
+        )}
       </TouchableOpacity>
 
-      {/* Sign Up Link */}
+      {/* Sign In Link */}
       <View style={tw`self-end mt-32`}>
-        <Text style={tw`text-gray-500`}>Don’t Have an Account?</Text>
-        <TouchableOpacity>
-          <Text style={tw`text-blue-500 font-bold `}>Sign Up</Text>
+        <Text style={tw`text-gray-500`}>Already Have an Account?</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
+          <Text style={tw`text-blue-500 font-bold `}>Sign In</Text>
         </TouchableOpacity>
       </View>
 
